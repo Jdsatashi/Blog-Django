@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block linkfile %}
+
+{% endblock linkfile %}
+
+{% block content %}
+
+<style>
+    .blog-posts{
+        max-width: 500px;
+        width: 100px;
+    }
+</style>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-5 pt-4">
+            <div class="card">
+                <div class="card-header" style="background-color: #e3f2fd; font-weight: 600">Login</div>
+
+                <div class="card-body">
+                    <div class="d-flex justify-content-center p-2 pb-1">
+                        <img src="https://thumbs.dreamstime.com/b/minecraft-logo-online-game-dirt-block-illustrations-concept-design-isolated-186775550.jpg" alt="" width="25%" height="25%" > 
+                    </div>
+                    <div class="d-flex justify-content-center pb-2">
+                        <p style="text-decoration-style: inherit;">Login to access to the website</p>
+                    </div>
+                    <form method="post">{% csrf_token %}
+
+                        <div class="row mb-3">
+                            <label for="email" class="col-md-4 col-form-label text-md-end">Email</label>
+
+                            <div class="col-md-6">
+                                <input id="email" type="email" name="email" autofocus placeholder="email@email.com" value="{{ account_form.initial.email }}">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="username" class="col-md-4 col-form-label text-md-end">Username</label>
+
+                            <div class="col-md-6">
+                                <input id="username" type="username" name="username" required placeholder="username" value="{{ account_form.initial.username }}">
+                            </div>
+                        </div>
+                        {% for field in account_form %}
+                            <p>
+                                {% for error in field.errors %}
+                                    <p style="color: red">{{ error }}</p>
+                                {% endfor %}
+                            </p>
+                        {% endfor %}
+                        {% if account_form.non_field_errors %}
+                            <div style="color: red">
+                                <p>{{ account_form.non_field_errors }}</p>
+                            </div>
+                        {% endif %}
+
+                        <div class="row mb-0">
+                            <div class="col-md-2 offset-md-5">
+                                <button type="submit" style="font-size: 1.15em;" class="btn btn-info">
+                                    Update
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-4 p-4">
+        <div class ="row">
+            <div class="blog-posts">
+                <h3 class="mx-auto mb-3 font-weight-normal">Blog posts</h3>
+                {% if blog_posts %}
+                <ul>
+                    {% for post in blog_posts %}
+                        <a href="{% url 'blog:detail' post.slug %}" style="text-decoration: none">
+                            <li class="list-group-item">{{post}}</li>
+                        </a>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                    <p>You have no post, uploading new post at <a href="{% url 'blog:create' %}">here</a></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
